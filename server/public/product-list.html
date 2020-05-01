@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="referrer" content="never">
+        <title>🌸樱之间🌸</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script src="/js/vue.min.js"></script>
+        <script src="/js/axios.min.js"></script>
+    </head>
+    <body>
+        <div class="layui-fluid" id="app">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
+                                </div>
+                                <div class="layui-input-inline layui-show-xs-block">
+                                  <select  lay-filter="select" :value="currentCategoryId">
+                                      <option value="-1">全部</option>
+                                      <option :value="category.id" v-for="category in categorys" :key="category.id">{{category.name}}</option>
+                  
+                                  </select>
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="username"  placeholder="请输入商品名称" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-header">
+                        
+                            <button class="layui-btn" onclick="xadmin.open('添加商品','./product-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table layui-form">
+                              <thead>
+                                <tr>
+                                  <th>商品ID</th>
+                                  <th>名称</th>
+                                  <th style="text-align: center;">缩略图</th>
+                                  <th>单价</th>
+                                  <th>总量</th>
+                                  <th>商品描述</th>
+                                  <th>商品分类</th>
+                                  <th>操作</th>
+                              </thead>
+                              <tbody>
+                                <tr v-for="product in products" :key="product.id">
+                                  <td>{{product.id}}</td>
+                                  <td>{{product.name}}</td>
+                                  <td style="text-align: center;">
+                                    <img style="height: 50px;width: 50px;" :src="product.images[0]" alt="" srcset="">
+                                  </td>
+                                  <td>￥{{product.price}}</td>
+                                  <td>{{product.amount}}</td>
+                                  <td>{{product.desc}}</td>
+                                  <td>{{product.category.name}}</td>
+                                  <td class="td-manage">
+                                    <a style="cursor: pointer;" title="编辑"  @click="xadmin.open('编辑','./product-edit.html?id='+product.id)">
+                                      <i class="layui-icon">&#xe642;</i>
+                                    </a>
+                                    <a style="cursor: pointer;" title="删除" onclick="" href="javascript:;">
+                                      <i class="layui-icon">&#xe640;</i>
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                        <!-- 分页 -->
+                        <!-- <div class="layui-card-body ">
+                            <div class="page">
+                                <div>
+                                  <a class="prev" href="">&lt;&lt;</a>
+                                  <a class="num" href="">1</a>
+                                  <span class="current">2</span>
+                                  <a class="num" href="">3</a>
+                                  <a class="num" href="">489</a>
+                                  <a class="next" href="">&gt;&gt;</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </body>
+    <script src="./js/config.js"></script>
+    <script>
+      layui.use(['laydate','form'], function(){
+        var laydate = layui.laydate;
+        var form = layui.form;
+
+        form.on('select(select)', function(data){
+          console.log(data.value); //得到被选中的值
+          app.currentCategoryId = parseInt(data.value)
+        })
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
+      });
+    </script>
+    <script>
+      const app = new Vue({
+        el:'#app',
+        data:{
+          allProducts:[],
+          categorys:[],
+          currentCategoryId:-1,//根据分类筛选商品列表 -1为全部
+        },
+        computed:{
+          products(){
+            if(this.currentCategoryId == -1){
+              return this.allProducts
+            }else{
+              return this.allProducts.filter(ele=>{
+                return ele.categoryId == this.currentCategoryId
+              })
+            }
+          }
+        },
+        beforeCreate(){
+          //获取所有商品分类
+          Http.get('/category/').then(res=>{
+            const data = res.data
+            this.categorys = data.data
+          })
+
+          //获取商品列表
+          Http.get('/product/all').then(res=>{
+            const data = res.data
+            this.allProducts = data.data.map(ele=>{
+                ele.createdAt = formatTime(ele.createdAt)
+                return ele
+            })
+          })
+        }
+      })
+
+    </script>
+    
+</html>

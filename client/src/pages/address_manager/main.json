@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "地址管理",
+    "usingComponents": {
+        "i-icon": "../../../static/ivew/icon/index"
+    }
+}

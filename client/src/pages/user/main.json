@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "i-icon": "../../../static/ivew/icon/index"
+    },
+    "navigationBarBackgroundColor":"#ffb6b9",
+    "navigationBarTextStyle": "white"
+}

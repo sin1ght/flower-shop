@@ -1,0 +1,11 @@
+$color-1:#ffb6b9;
+$color-2:#fae3d9;
+$gray:#80848f;
+$light-gray:#f6f6f6;
+
+/*单行溢出省略号*/
+@mixin one-line-overflow {
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}

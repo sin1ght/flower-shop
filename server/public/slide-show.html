@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>🌸樱之间🌸</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="./js/jquery.min.js"></script>
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script src="/js/vue.min.js"></script>
+        <script src="/js/axios.min.js"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div class="layui-fluid" id="app">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                          <button type="button" class="layui-btn" id="upload">
+                            <i class="layui-icon">&#xe67c;</i>上传图片
+                          </button>
+                          <button class="layui-btn"  @click="addSlide"><i class="layui-icon"></i>添加轮播图</button>
+                            
+                            <hr>
+                            
+                        </div>
+                        
+                        <div class="layui-card-body ">
+                            <table class="layui-table layui-form">
+                              <thead>
+                                <tr>
+                                  
+                                  <th >缩略图</th>
+                                  <th>url</th>
+                                  <th >操作</th>
+                              </thead>
+                              <tbody class="x-cate">
+                                <tr v-for="(slide,index) in slides" :key="slide.id">
+                                  
+                                  <td>
+                                    <img style="max-width: 150px;height: 100px;" :src="slide.url" alt="">
+                                  </td>
+                                  <td>
+                                    {{slide.url}}
+                                  </td>
+                                  <td class="td-manage">
+                                    <button class="layui-btn-danger layui-btn layui-btn-xs"  @click="deleteSlide(slide.id,index)" ><i class="layui-icon">&#xe640;</i>删除</button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/config.js"></script>
+        <script>
+          const app = new Vue({
+              el:'#app',
+              data:{
+                slides:[],
+                uploadSlideUrl:''//要添加轮播图的url
+              },
+              beforeCreate(){
+                Http.get('/slide/').then((res)=>{
+                  const data = res.data
+                  this.slides = data.data
+                })
+              },
+              methods:{
+                //添加轮播图
+                addSlide(){
+                  if(this.uploadSlideUrl){
+                    Http.post('/slide/add',{
+                      url:this.uploadSlideUrl
+                    }).then(res=>{
+                      const data = res.data
+                      this.slides.push(data.data)
+                      this.uploadSlideUrl = ''
+                    })
+                  }else{
+                    layer.msg('请先上传图片', {icon: 2})
+                  }
+                },
+                //删除轮播图
+                deleteSlide(id,index){
+                  //删除数据库数据
+                  Http.post('/slide/delete',{
+                      id
+                  }).then(res=>{
+                    const deleteSlide = this.slides.splice(index,1)[0]
+                    
+                    layer.msg('删除成功', {icon: 1})
+                    //删除上传的文件
+                    Http.post('/file/delete',{
+                        url:deleteSlide.url
+                      }).then(res=>{
+                        console.log(res.data)
+                    })
+                  })
+                },
+                
+              }
+          })
+        </script>
+        <script>
+          //图片上传
+          layui.use(['form','upload'], function(){
+              var upload = layui.upload
+          
+              //执行实例
+              var uploadInst = upload.render({
+                  elem: '#upload', //绑定元素
+                  url: '/api/v1/file/upload', //上传接口
+                  done: function(res){
+                      //上传完毕回调
+                      console.log(res.data.url)
+                      app.uploadSlideUrl = res.data.url
+                  },
+                  error: function(){
+                      //请求异常回调
+                  }
+              })
+          })
+      </script>
+    </body>
+</html>

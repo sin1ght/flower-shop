@@ -1,0 +1,5 @@
+{
+    "usingComponents": {
+        "i-divider": "../../../static/ivew/divider/index"
+    }
+}

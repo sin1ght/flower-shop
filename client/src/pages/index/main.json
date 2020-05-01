@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "i-icon": "../../../static/ivew/icon/index",
+        "i-tabs": "../../../static/ivew/tabs/index",
+        "i-tab": "../../../static/ivew/tab/index"
+    }
+}

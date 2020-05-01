@@ -1,0 +1,51 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/category/main",
+    "pages/cart/main",
+    "pages/user/main",
+    "pages/product_detail/main",
+    "pages/search/main",
+    "pages/pay/main",
+    "pages/userinfo/main",
+    "pages/address_add/main",
+    "pages/address_manager/main",
+    "pages/order_manager/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "樱之间",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color":"#80848f",
+    "selectedColor":"#ffb6b9",
+    "list": [
+      {
+        "pagePath": "pages/index/main",
+        "text": "首页",
+        "iconPath":"/static/images/icon/home.png",
+        "selectedIconPath":"/static/images/icon/home-a.png"
+      }, 
+      {
+        "pagePath": "pages/category/main",
+        "text": "全部分类",
+        "iconPath":"/static/images/icon/category.png",
+        "selectedIconPath":"/static/images/icon/category-a.png"
+      },
+      {
+        "pagePath": "pages/cart/main",
+        "text": "购物车",
+        "iconPath":"/static/images/icon/cart.png",
+        "selectedIconPath":"/static/images/icon/cart-a.png"
+      },
+      {
+        "pagePath": "pages/user/main",
+        "text": "用户中心",
+        "iconPath":"/static/images/icon/user.png",
+        "selectedIconPath":"/static/images/icon/user-a.png"
+      }
+   ]
+  }
+}

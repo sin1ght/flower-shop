@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="referrer" content="never">
+        <title>🌸樱之间🌸</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script src="./js/vue.min.js"></script>
+        <script src="./js/axios.min.js"></script>
+
+        <style>
+            .layui-table tbody tr:hover{
+                background: white;
+            }
+
+            .layui-form-item{
+                display: flex;
+                align-items: center;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="layui-fluid" id="app">
+            <div class="layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label for="username" class="layui-form-label">
+                            收货人</label>
+                        <div class="layui-input-inline">
+                            <input :value="order.address.name" disabled type="text"  name="username" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="phone" class="layui-form-label">
+                            收货人手机号</label>
+                        <div class="layui-input-inline">
+                            <input :value="order.address.phoneNumber" disabled type="text" id="phone" name="phone" required="" lay-verify="phone" autocomplete="off" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="username" class="layui-form-label">
+                            收货地址</label>
+                        <div class="layui-input-inline">
+                            <input :value="order.address.detail" disabled type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="username" class="layui-form-label">
+                            订单状态</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-input-inline">
+                                <input :value="order.statusText" disabled type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="layui-form-item">
+                        <label for="desc" class="layui-form-label">购买的商品</label>
+                        <div class="layui-input-inline" style="flex-grow: 1;">
+                            <table class="layui-table" style="text-align: center;">
+                                <thead>
+                                    <tr style="background: white;">
+                                        <th style="text-align: center;">商品id</th>
+                                        <th style="text-align: center;">商品名称</th>
+                                        <th style="text-align: center;">商品图片</th>
+                                        <th style="text-align: center;">商品单价</th>
+                                        <th style="text-align: center;">购买数量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="record in order.cartRecords" :key="record.id">
+                                        <td>{{record.productId}}</td>
+                                        <td>{{record.name}}</td>
+                                        <td>
+                                            <img :src="record.image" width="100" height="100">
+                                        </td>
+                                        <td>￥{{record.price}}</td>
+                                        <td>{{record.num}}</td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="username" class="layui-form-label">
+                合计</label>
+            <div class="layui-input-inline">
+                <div class="layui-input-inline">
+                    <input :value="order.price" disabled type="text" id="username" name="username" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label for="desc" class="layui-form-label">买家留言</label>
+            <div class="layui-input-inline">
+                <textarea style="width: 190px;" :value="order.message" placeholder="请输入内容" disabled id="desc" name="desc" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        
+        </form>
+        </div>
+        </div>
+        <script src="./js/config.js"></script>
+        <script>
+            const orderId = getUrlQueryValue('id')
+
+            const app = new Vue({
+                el:'#app',
+                data:{
+                    order:{
+                        address:{},
+                        cartRecords:[]
+                    }
+                },
+                beforeCreate(){
+                    //获取订单详情
+                    Http.get('/order/detail',{
+                        params:{
+                            id:orderId
+                        }
+                    }).then(res=>{
+                        const data = res.data
+                        this.order = data.data
+                        const statusTexts = ['待付款','待发货','待收获','待评价']
+                        this.order.statusText = statusTexts[this.order.status]
+
+                        if(this.order.message == ''){
+                            this.order.message = '无'
+                        }
+
+                        this.order.price = '￥' + this.order.price
+                    })
+                }
+            })
+
+        </script>
+        <script>layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+
+               
+
+                
+
+            });
+        </script>
+        
+    </body>
+
+</html>

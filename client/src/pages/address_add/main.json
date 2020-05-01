@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "新增地址",
+    "usingComponents": {
+        "i-icon": "../../../static/ivew/icon/index"
+    }
+}

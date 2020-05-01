@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>🌸樱之间🌸</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script src="/js/vue.min.js"></script>
+        <script src="/js/axios.min.js"></script>
+
+        <style>
+            #app{
+                padding: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content" id="app">
+            <div class="layui-form" action="">
+                <div class="layui-form-item">
+                  <label class="layui-form-label"><span class="x-red">*</span>商品名称</label>
+                  <div class="layui-input-inline">
+                    <input v-model="name" type="text" name="name" required  lay-verify="required" placeholder="请输入商品名称" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label"><span class="x-red">*</span>商品单价</label>
+                  <div class="layui-input-inline">
+                    <input v-model="price" type="number" name="price" required lay-verify="required" placeholder="请输入商品单价" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="x-red">*</span>商品总量</label>
+                    <div class="layui-input-inline">
+                      <input v-model="amount" type="number" name="amount" required lay-verify="required" placeholder="请输入商品总量" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label"><span class="x-red">*</span>商品分类</label>
+                  <div class="layui-input-inline">
+                    <select  name="categoryId" lay-verify="required">
+                        <option :value="category.id" v-for="category in categorys" :key="category.id">{{category.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="x-red">*</span>商品图片</label>
+                    <div class="layui-input-inline">
+                        <button type="button" class="layui-btn" id="upload">
+                            <i class="layui-icon">&#xe67c;</i>上传图片
+                        </button>
+                    </div>
+                </div>
+                <div style="display: flex;margin-left: 110px;margin-bottom: 20px;">
+                  <div v-for="(url,index) in images" :key="index" style="position: relative;">
+                    <div @click="imgDelete(index,url)" style="background: red;position: absolute;right: 5px;top: -5px;border-radius: 10px;padding: 0 1px;cursor: pointer;">
+                        <i style="color: white;" class="layui-icon layui-icon-close"></i>
+                    </div>
+                    <img style="width: 100px;height: 100px;margin-right: 10px;"  :src="url" alt="">
+                  </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                  <label class="layui-form-label"><span class="x-red">*</span>商品描述</label>
+                  <div class="layui-input-inline">
+                    <textarea v-model="desc" style="width: 190px;" name="desc" placeholder="请输入商品描述" class="layui-textarea"></textarea>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <script src="./js/config.js"></script>
+        <script>
+          //提前让select组件显示出来
+          layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+
+
+                //监听提交
+                form.on('submit(add)',function(data) {
+                    const fields = data.field
+                    app.categoryId = fields.categoryId
+                    
+                    app.save()
+
+                    return false;
+                });
+
+            }
+          )
+        </script>
+        <script>
+            const app = new Vue({
+                el:'#app',
+                data:{
+                    categorys:[],
+                    name:'',
+                    price:0.0,
+                    amount:0,
+                    desc:'',
+                    categoryId:1,
+                    images:[]
+                },
+                beforeCreate(){
+                    //获取所有商品分类
+                    Http.get('/category/').then(res=>{
+                        const data = res.data
+                        this.categorys = data.data
+                    })
+                },
+                methods:{
+                  //图片删除
+                  imgDelete(index,url){
+                        Http.post('/file/delete',{
+                            url
+                        }).then(res=>{
+                            console.log(res.data)
+                            this.images.splice(index,1)
+                        })
+                   },
+
+                  //添加商品
+                  save(){
+                    Http.post('/product/add',{
+                      name:this.name,
+                      price:this.price,
+                      amount:this.amount,
+                      desc:this.desc,
+                      categoryId:this.categoryId,
+                      images:this.images
+                    }).then(res=>{
+                        const data = res.data
+                        console.log(data)
+
+                        //关闭当前frame
+                        xadmin.close();
+
+                        // 可以对父窗口进行刷新 
+                        xadmin.father_reload();
+                    })
+                  }
+                }
+            })
+
+        </script>
+
+        <script>
+            //图片上传
+            layui.use('upload', function(){
+                var upload = layui.upload
+            
+                //执行实例
+                var uploadInst = upload.render({
+                    elem: '#upload', //绑定元素
+                    url: '/api/v1/file/upload', //上传接口
+                    done: function(res){
+                        //上传完毕回调
+                        console.log(res.data.url)
+                        app.images.push(res.data.url)
+                    },
+                    error: function(){
+                        //请求异常回调
+                    }
+                })
+            })
+        </script>
+    </body>
+
+</html>
