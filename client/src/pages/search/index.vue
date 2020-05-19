@@ -65,22 +65,22 @@ import FlowerCard from '../../components/FlowerCard'
 
 const searchResults = [
   {
-    title:'D级玫瑰粉红雪山',
+    name:'D级玫瑰粉红雪山',
     price:12.9,
-    boughtCount:143,
-    img:'/static/images/flower/1.jpg'
+    sales:103,
+    images:['https://ww3.sinaimg.cn/bmiddle/9ecef21dly1gdxp0hcz81j20u011h7fq.jpg']
   },
   {
-    title:'梭尔邦多头粉百合',
-    price:12.9,
-    boughtCount:143,
-    img:'/static/images/flower/2.jpg'
+    name:'梭尔邦多头粉百合',
+    price:10.0,
+    sales:78,
+    images:['https://ww3.sinaimg.cn/bmiddle/69b7d63aly1gdz0a6oixgj20u016hk35.jpg']
   },
   {
-    title:'西伯利亚三头百合',
-    price:12.9,
-    boughtCount:143,
-    img:'/static/images/flower/3.jpg'
+    name:'西伯利亚三头百合',
+    price:15.6,
+    sales:15,
+    images:['https://ww1.sinaimg.cn/bmiddle/75b16f03gy1gdz472lv9lj218g1qukjl.jpg']
   }
 ]
 
@@ -95,6 +95,9 @@ export default {
             currentTab:1,
             isFinishSearch:false,//是否搜索结束 开始展示搜索结果
         }
+    },
+    onUnload(){
+        this.isFinishSearch = false
     },
     methods:{
         handleTabChange({mp}){

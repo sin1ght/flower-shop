@@ -68,7 +68,7 @@
                                         <td v-if="order.status === 0" style="color: #FFB800;">{{order.statusText}}</td>
                                         <td v-if="order.status === 1" style="color: #FF5722;">{{order.statusText}}</td>
                                         <td v-if="order.status === 2" style="color: #009688;">{{order.statusText}}</td>
-                                        <td v-if="order.status === 4" style="color: #1e9fff;">{{order.statusText}}</td>
+                                        <td v-if="order.status == 3" style="color: #1e9fff;">{{order.statusText}}</td>
                                         <td v-if="order.status === 4" style="color: #393D49;">{{order.statusText}}</td>
                                         <td>{{order.address.name}}</td>
                                         <td>{{order.address.phoneNumber}}</td>
