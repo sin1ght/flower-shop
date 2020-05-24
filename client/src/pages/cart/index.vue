@@ -179,6 +179,11 @@ export default {
                         wx.setStorageSync('order_cart_data',data)
                     }
                 })
+            }else{
+                wx.showToast({
+                    image:'/static/images/icon/error.png',
+                    title: '至少选择一商品'
+                })
             }
         }
     }

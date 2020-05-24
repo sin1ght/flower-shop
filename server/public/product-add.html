@@ -68,7 +68,7 @@
                 <div class="layui-form-item layui-form-text">
                   <label class="layui-form-label"><span class="x-red">*</span>商品描述</label>
                   <div class="layui-input-inline">
-                    <textarea v-model="desc" style="width: 190px;" name="desc" placeholder="请输入商品描述" class="layui-textarea"></textarea>
+                    <textarea v-model="desc" style="width: 190px;" required lay-verify="required"  name="desc" placeholder="请输入商品描述" class="layui-textarea"></textarea>
                   </div>
                 </div>
                 <div class="layui-form-item">
@@ -92,6 +92,7 @@
                 form.on('submit(add)',function(data) {
                     const fields = data.field
                     app.categoryId = fields.categoryId
+
                     
                     app.save()
 
