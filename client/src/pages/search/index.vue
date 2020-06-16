@@ -31,12 +31,9 @@
             <div class="search-history" v-if="!isFinishSearch">
                 <p class="title">大家都在搜</p>
                 <div class="hot-history">
-                    <p>清明节</p>
                     <p>生日</p>
                     <p>百合</p>
-                    <p>清明节</p>
-                    <p>生日</p>
-                    <p>百合</p>
+                    <p>玫瑰</p>
                 </div>
                 <div class="title">
                     <p>搜索历史</p>

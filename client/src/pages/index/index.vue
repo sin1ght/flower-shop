@@ -12,7 +12,7 @@
       <swiper
         class="swiper"
         :indicator-dots="true"
-        :autoplay="false"
+        :autoplay="true"
         :circular="true"
         :interval="3000"
         indicator-color="#fae3d9"
