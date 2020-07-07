@@ -1,10 +1,8 @@
-# backup
-一些备份的东西
+# flower-shop
 
+>前端：mpvue 后端：koa2+sqlite
 
-- 微信小程序 后端接口目前用的是本地域名 待更改
-- 后端图片上传接口 图片地址用的本地域名待更改 
-- 后台管理系统 跨域通过的nginx 反向代理
+一个基于mpvue的微信花店小程序
 
 
 ### server启动流程
@@ -13,3 +11,11 @@
 
 ### client启动流程
 - npm run dev
+
+
+![image](https://upload-images.jianshu.io/upload_images/14069474-26890960923aad67.png)
+![image](https://upload-images.jianshu.io/upload_images/14069474-169c6d9554edf474.png)
+![image](https://upload-images.jianshu.io/upload_images/14069474-21f44de278f68d42.png)
+![image](https://upload-images.jianshu.io/upload_images/14069474-5c73817c15bc469d.png)
+![image](https://upload-images.jianshu.io/upload_images/14069474-abf91c01a3cfbd78.png)
+![image](https://upload-images.jianshu.io/upload_images/14069474-936ab51a8d8fa153.png)
