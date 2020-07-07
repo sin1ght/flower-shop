@@ -13,9 +13,5 @@
 - npm run dev
 
 
-![image](https://upload-images.jianshu.io/upload_images/14069474-26890960923aad67.png)
-![image](https://upload-images.jianshu.io/upload_images/14069474-169c6d9554edf474.png)
-![image](https://upload-images.jianshu.io/upload_images/14069474-21f44de278f68d42.png)
-![image](https://upload-images.jianshu.io/upload_images/14069474-5c73817c15bc469d.png)
-![image](https://upload-images.jianshu.io/upload_images/14069474-abf91c01a3cfbd78.png)
-![image](https://upload-images.jianshu.io/upload_images/14069474-936ab51a8d8fa153.png)
+![](https://s1.ax1x.com/2020/07/07/UFI3rT.png)
+
